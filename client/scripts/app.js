@@ -11,10 +11,10 @@ $(document).ready(function() {
     var context = this;
 
     $('#roomSelect').on('change', function(e) {
+      context.clearMessages();
+      context.lastFetch = '2016-01-01T00:00:00';
       context.fetch();
     });
-
-
 
     $('#submit-message').on('click', function(e) {
       var text = $(this).parent().find('input[name="message"]').val();
