@@ -3,6 +3,7 @@ var app = {};
 $(document).ready(function() {
   var ChatterBox = function() {
     this.server = 'https://api.parse.com/1/classes/messages';
+    this.lastFetch = '2016-01-01T00:00:00';
   };
 
   ChatterBox.prototype.init = function () {
@@ -26,6 +27,7 @@ $(document).ready(function() {
         roomname: roomname
       };
       context.send(message);
+      $('#submit-text').val('');
     });
   };
 
@@ -48,21 +50,27 @@ $(document).ready(function() {
   };
 
   ChatterBox.prototype.fetch = function () {
-    this.clearMessages();
     var room = $('#roomSelect').find(':selected').text();
     $.ajax({
       // This is the url you should use to communicate with the parse API server.
       url: this.server,
       type: 'GET',
-      data: 'order=-createdAt',
+      data: {'order': '-createdAt', 'where': '{"createdAt":{"$gt":"' + this.lastFetch + '"}}'},
       success: function (data) {
-        for (var message of data.results) {
-          if (room === 'All' || this.escapeHtml(message.roomname) === room) {
-            this.renderMessage(message);
+        for (var i = data.results.length - 1; i >= 0; i--) {
+          if (i === 0) {
+            this.lastFetch = data.results[i].createdAt;
           }
-          this.renderRoom(message);
+          if (room === 'All' || this.escapeHtml(data.results[i].roomname) === room) {
+            this.renderMessage(data.results[i]);
+          }
+          this.renderRoom(data.results[i]);
         }
-        console.log('chatterbox: Fetch Successful');
+
+        var chats = $('.messages').children().length;
+        if (chats > 100) {
+          $('.messages').find(':nth-last-child(-n+' + (chats - 100) + ')').remove();
+        }
       }.bind(this),
       error: function (data) {
         // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -85,7 +93,7 @@ $(document).ready(function() {
     var seconds = created.getSeconds();
     var milli = created.getMilliseconds();
     var timeStamp = month + '/' + day + '/' + year + ' ' + hours + ':' + mins + ':' + seconds + ':' + milli;
-    $('.messages').append('<li>' + timeStamp + ' ' + this.escapeHtml(message.username) + ': ' + this.escapeHtml(message.text) + '</li>');
+    $('.messages').prepend('<li>' + timeStamp + ' ' + this.escapeHtml(message.username) + ': ' + this.escapeHtml(message.text) + '</li>');
   };
 
   ChatterBox.prototype.renderRoom = function (message) {
@@ -118,5 +126,6 @@ $(document).ready(function() {
 
   app = new ChatterBox();
   app.init();
+  setInterval(app.fetch.bind(app), 2000);
 
 });

@@ -5,6 +5,10 @@ body {
     font-family: arial, sans-serif;
 }
 
+ul {
+    list-style: none;
+}
+
 #main, #chats {
     width: 500px;
     margin: auto;
