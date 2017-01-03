@@ -13,6 +13,13 @@ $(document).ready(function() {
       context.clearMessages();
       context.fetch(this.options[e.target.selectedIndex].value);
     });
+
+    $('#submit-message').on('click', function(e) {
+      var text = $(this).parent().find('input[name="message"]').val();
+      var username = 'bob';
+      var roomname = $('#roomSelect').find(':selected').text();
+      console.log(roomname);
+    });
   };
 
   ChatterBox.prototype.send = function (message) {
@@ -62,16 +69,16 @@ $(document).ready(function() {
   };
 
   ChatterBox.prototype.renderMessage = function (message) {
-    var timeStamp = new Date(message.createdAt);
-    var month = timeStamp.getMonth() + 1;
-    var day = timeStamp.getDate();
-    var year = timeStamp.getFullYear();
-    var hours = timeStamp.getHours();
-    var mins = timeStamp.getMinutes();
-    var seconds = timeStamp.getSeconds();
-    var milli = timeStamp.getMilliseconds();
-    var timeString = month + '/' + day + '/' + year + ' ' + hours + ':' + mins + ':' + seconds + ':' + milli;
-    $('.messages').prepend('<li>' + timeString + ' ' + this.escapeHtml(message.username) + ': ' + this.escapeHtml(message.text) + '</li>');
+    var created = new Date(message.createdAt);
+    var month = created.getMonth() + 1;
+    var day = created.getDate();
+    var year = created.getFullYear();
+    var hours = created.getHours();
+    var mins = created.getMinutes();
+    var seconds = created.getSeconds();
+    var milli = created.getMilliseconds();
+    var timeStamp = month + '/' + day + '/' + year + ' ' + hours + ':' + mins + ':' + seconds + ':' + milli;
+    $('.messages').prepend('<li>' + timeStamp + ' ' + this.escapeHtml(message.username) + ': ' + this.escapeHtml(message.text) + '</li>');
   };
 
   ChatterBox.prototype.renderRoom = function (message) {
