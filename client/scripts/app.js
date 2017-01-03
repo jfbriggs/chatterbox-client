@@ -10,15 +10,22 @@ $(document).ready(function() {
     var context = this;
 
     $('#roomSelect').on('change', function(e) {
-      context.clearMessages();
-      context.fetch(this.options[e.target.selectedIndex].value);
+      context.fetch();
     });
+
+
 
     $('#submit-message').on('click', function(e) {
       var text = $(this).parent().find('input[name="message"]').val();
-      var username = 'bob';
+      var username = window.location.search;
+      username = username.substring(username.indexOf('=') + 1, username.length);
       var roomname = $('#roomSelect').find(':selected').text();
-      console.log(roomname);
+      var message = {
+        username: username,
+        text: text,
+        roomname: roomname
+      };
+      context.send(message);
     });
   };
 
@@ -30,8 +37,9 @@ $(document).ready(function() {
       data: JSON.stringify(message),
       contentType: 'application/json',
       success: function (data) {
+        this.fetch();
         console.log('chatterbox: Message sent');
-      },
+      }.bind(this),
       error: function (data) {
         // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
         console.error('chatterbox: Failed to send message', data);
@@ -39,18 +47,17 @@ $(document).ready(function() {
     });
   };
 
-  ChatterBox.prototype.fetch = function (room) {
+  ChatterBox.prototype.fetch = function () {
+    this.clearMessages();
+    var room = $('#roomSelect').find(':selected').text();
     $.ajax({
       // This is the url you should use to communicate with the parse API server.
       url: this.server,
       type: 'GET',
+      data: 'order=-createdAt',
       success: function (data) {
         for (var message of data.results) {
-          if (room) {
-            if (room === 'All' || this.escapeHtml(message.roomname) === room) {
-              this.renderMessage(message);
-            }
-          } else {
+          if (room === 'All' || this.escapeHtml(message.roomname) === room) {
             this.renderMessage(message);
           }
           this.renderRoom(message);
@@ -78,7 +85,7 @@ $(document).ready(function() {
     var seconds = created.getSeconds();
     var milli = created.getMilliseconds();
     var timeStamp = month + '/' + day + '/' + year + ' ' + hours + ':' + mins + ':' + seconds + ':' + milli;
-    $('.messages').prepend('<li>' + timeStamp + ' ' + this.escapeHtml(message.username) + ': ' + this.escapeHtml(message.text) + '</li>');
+    $('.messages').append('<li>' + timeStamp + ' ' + this.escapeHtml(message.username) + ': ' + this.escapeHtml(message.text) + '</li>');
   };
 
   ChatterBox.prototype.renderRoom = function (message) {
@@ -94,6 +101,7 @@ $(document).ready(function() {
   };
 
   ChatterBox.prototype.escapeHtml = function (string) {
+    // return string;
     var entityMap = {
       '&': '&amp;',
       '<': '&lt;',
@@ -112,10 +120,3 @@ $(document).ready(function() {
   app.init();
 
 });
-
-
-var message = {
-  username: 'shawndrost',
-  text: '<script>something</script>',
-  roomname: '4chan'
-};
