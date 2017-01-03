@@ -4,6 +4,7 @@ $(document).ready(function() {
   var ChatterBox = function() {
     this.server = 'https://api.parse.com/1/classes/messages';
     this.lastFetch = '2016-01-01T00:00:00';
+    this.friends = [];
   };
 
   ChatterBox.prototype.init = function () {
@@ -29,6 +30,13 @@ $(document).ready(function() {
       context.send(message);
       $('#submit-text').val('');
     });
+
+    $('.messages').on('click', 'span', function() {
+      var classes = $(this).removeClass('friend').attr('class');
+      context.handleUsernameClick(classes);
+      context.fetch();
+    });
+
   };
 
   ChatterBox.prototype.send = function (message) {
@@ -55,8 +63,9 @@ $(document).ready(function() {
       // This is the url you should use to communicate with the parse API server.
       url: this.server,
       type: 'GET',
-      data: {'order': '-createdAt', 'where': '{"createdAt":{"$gt":"' + this.lastFetch + '"}}'},
+      data: {'order': '-createdAt'},
       success: function (data) {
+        this.clearMessages();
         for (var i = data.results.length - 1; i >= 0; i--) {
           if (i === 0) {
             this.lastFetch = data.results[i].createdAt;
@@ -65,11 +74,6 @@ $(document).ready(function() {
             this.renderMessage(data.results[i]);
           }
           this.renderRoom(data.results[i]);
-        }
-
-        var chats = $('.messages').children().length;
-        if (chats > 100) {
-          $('.messages').find(':nth-last-child(-n+' + (chats - 100) + ')').remove();
         }
       }.bind(this),
       error: function (data) {
@@ -80,7 +84,7 @@ $(document).ready(function() {
   };
 
   ChatterBox.prototype.clearMessages = function () {
-    $('.messages > li').remove();
+    $('.messages > div').remove();
   };
 
   ChatterBox.prototype.renderMessage = function (message) {
@@ -92,8 +96,20 @@ $(document).ready(function() {
     var mins = created.getMinutes();
     var seconds = created.getSeconds();
     var milli = created.getMilliseconds();
+
+    var username = this.escapeHtml(message.username);
     var timeStamp = month + '/' + day + '/' + year + ' ' + hours + ':' + mins + ':' + seconds + ':' + milli;
-    $('.messages').prepend('<li>' + timeStamp + ' ' + this.escapeHtml(message.username) + ': ' + this.escapeHtml(message.text) + '</li>');
+    var user = $('<span></span>').append(username + ' foretold: ');
+    var text = $('<span></span>').append(this.escapeHtml(message.text));
+    var time = $('<span></span>').append(timeStamp);
+    var listItem = $('<li></li>');
+
+    user.addClass(username.replace(/ /g, '__'));
+    if (this.friends.indexOf(username.replace(/ /g, '__')) >= 0) {
+      user.addClass('friend');
+    }
+    listItem.append(user).append(text).append(time);
+    $('.messages').prepend(listItem);
   };
 
   ChatterBox.prototype.renderRoom = function (message) {
@@ -124,8 +140,20 @@ $(document).ready(function() {
     });
   };
 
+  ChatterBox.prototype.handleUsernameClick = function (username) {
+    var index = this.friends.indexOf(username);
+    $('.' + username).toggleClass('friend');
+    console.log($('.' + username).parent().toggleClass('friend-box'));
+
+    if (index >= 0) {
+      this.friends.splice(index, 1);
+    } else {
+      this.friends.push(username);
+    }
+  };
+
   app = new ChatterBox();
   app.init();
-  setInterval(app.fetch.bind(app), 2000);
+  // setInterval(app.fetch.bind(app), 2000);
 
 });

@@ -2,7 +2,7 @@ body {
     background: #eee;
     text-align: center;
     padding: 0 25px;
-    font-family: arial, sans-serif;
+    font-family:'Arima Madurai', sans-serif;
 }
 
 ul {
@@ -88,7 +88,53 @@ form input[type=text] {
 }
 
 .friend {
-    color: #fff;
-    background-color: #0090da;
+    font-weight: bold;
 }
 
+#roomSelect {
+    width: 100%;
+    max-width: 90%;
+}
+
+.messages {
+    padding: 0;
+}
+
+.messages span:hover {
+    cursor: pointer;
+}
+
+.messages li {
+    /*background-color: #d1e2ff;*/
+    margin-bottom: 2px;
+    border-radius: 5px;
+}
+
+.messages li:hover {
+    background-color: #edf3ff;
+}
+
+.messages span {
+    display: block;
+}
+
+li span:nth-child(1) {
+    font-variant: small-caps;
+    font-size: 14px;
+    padding: 1px 0 0 5px;
+}
+
+li span:nth-child(2) {
+    font-size: 16px;
+    padding: 0 0 0 5px;
+}
+
+li span:nth-child(3) {
+    font-style: italic;
+    font-size: 12px;
+    padding: 0 0 0 5px;
+}
+
+.friend-box {
+    background-color: black;
+}
