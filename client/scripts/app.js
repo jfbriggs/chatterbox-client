@@ -156,7 +156,7 @@ $(document).ready(function() {
 
     return String(string).replace(/[&<>"'\/]/g, function (s) {
       return entityMap[s];
-    }).replace('%20', ' ');
+    }).replace(/%20/g, ' ');
   };
 
   ChatterBox.prototype.handleUsernameClick = function (username) {
