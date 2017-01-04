@@ -151,10 +151,13 @@ $(document).ready(function() {
       '>': '&gt;',
       '"': '&quot;',
       "'": '&#39;',
-      '/': '&#x2F;'
+      '/': '&#x2F;',
+      '$': '&#36;',
+      '(': '&#40;',
+      ')': '&#41;'
     };
 
-    return String(string).replace(/[&<>"'\/]/g, function (s) {
+    return String(string).replace(/[&<>"'\/$()]/g, function (s) {
       return entityMap[s];
     }).replace(/%20/g, ' ');
   };
@@ -173,6 +176,6 @@ $(document).ready(function() {
 
   app = new ChatterBox();
   app.init();
-  setInterval(app.fetch.bind(app), 2000);
+  setInterval(app.fetch.bind(app), 1000);
 
 });

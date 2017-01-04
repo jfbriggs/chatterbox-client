@@ -43,6 +43,7 @@ ul {
     max-height: 550px;
     overflow: hidden;
     overflow-y: auto;
+    border-radius: 5px;
 }
 
 #main .error {
@@ -72,8 +73,7 @@ ul {
 }
 
 form#user-message {
-    padding: 20px;
-    padding-left: 0;
+    padding: 10px 0 10px 0;
 }
 
 form input[type=text] {
@@ -158,4 +158,8 @@ li span:nth-child(3) {
 
 li.friend-box {
     background-color: #fcde8d;
+}
+
+button#reload-user-name {
+    margin-top: 15px;
 }
