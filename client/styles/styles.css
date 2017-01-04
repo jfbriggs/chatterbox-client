@@ -50,7 +50,17 @@ ul {
     line-height: 13px;
 }
 
-form {
+#room-submit {
+    display: none;
+}
+
+#create-room-text {
+    display:none;
+    width: 200px;
+    height: 10px;
+}
+
+form#user-message {
     padding: 20px;
     padding-left: 0;
     margin-bottom: 20px;
@@ -105,13 +115,14 @@ form input[type=text] {
 }
 
 .messages li {
-    /*background-color: #d1e2ff;*/
+    background-color: #a7c2f2;
     margin-bottom: 2px;
     border-radius: 5px;
+    overflow-wrap: break-word;
 }
 
 .messages li:hover {
-    background-color: #edf3ff;
+    background-color: #ddfdfe;
 }
 
 .messages span {
@@ -135,6 +146,6 @@ li span:nth-child(3) {
     padding: 0 0 0 5px;
 }
 
-.friend-box {
-    background-color: black;
+li.friend-box {
+    background-color: #fcde8d;
 }

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>chatterbox</title>
     <link rel="stylesheet" href="styles/styles.css">
-    <link href="https://fonts.googleapis.com/css?family=Arima+Madurai:300,400,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arima+Madurai:300,400,900" rel="stylesheet">
 
     <!-- dependencies -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -31,6 +31,11 @@
       <select id="roomSelect">
         <option value="All">All</option>
       </select>
+      <button id="create-room">Create Room</button>
+      <form id="room-create-box">
+        <input id="create-room-text" type="text" placeholder="Name Your Room...">
+        <input id="room-submit" type="submit" value="Create" onclick="return false">
+      </form>
     </div>
     <div id="chats">
       <form id="user-message">
