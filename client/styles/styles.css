@@ -1,5 +1,7 @@
 body {
-    background: #eee;
+    background-image: url('../images/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
     text-align: center;
     padding: 0 25px;
     font-family:'Arima Madurai', sans-serif;
@@ -13,10 +15,18 @@ ul {
     width: 500px;
     margin: auto;
     text-align: left;
-    background: white;
-    padding: 50px 60px;
-    border: solid #ddd;
+    background-color: rgba(255,255,255, 0.7);
+    padding: 10px 60px;
+}
+
+#main {
+    border-bottom: solid #fff;
     border-width: 0 1px 1px 1px;
+    border-radius: 5px 5px 0 0;
+}
+
+#chats {
+    border-radius: 0 0 5px 5px;
 }
 
 #main h1 {
@@ -30,8 +40,10 @@ ul {
     font-style:italic;
 }
 
-#main ul {
-    padding-left: 20px;
+#chats ul {
+    max-height: 550px;
+    overflow: hidden;
+    overflow-y: auto;
 }
 
 #main .error {
@@ -63,7 +75,6 @@ ul {
 form#user-message {
     padding: 20px;
     padding-left: 0;
-    margin-bottom: 20px;
 }
 
 form input[type=text] {
@@ -76,7 +87,6 @@ form input[type=text] {
 .chat {
     padding: 5px;
     margin-bottom: 5px;
-    background-color: #eee;
 }
 
 .chat .username {
@@ -107,6 +117,7 @@ form input[type=text] {
 }
 
 .messages {
+    margin-top: 5px;
     padding: 0;
 }
 
@@ -115,14 +126,14 @@ form input[type=text] {
 }
 
 .messages li {
-    background-color: #a7c2f2;
+    background-color: #CACACA;
     margin-bottom: 2px;
     border-radius: 5px;
     overflow-wrap: break-word;
 }
 
 .messages li:hover {
-    background-color: #ddfdfe;
+    background-color: #8b8b8b;
 }
 
 .messages span {

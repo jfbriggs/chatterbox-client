@@ -11,12 +11,14 @@ $(document).ready(function() {
     this.fetch();
     var context = this;
 
+    //Chat Room drop-down menu
     $('#roomSelect').on('change', function(e) {
       context.clearMessages();
       context.lastFetch = '2016-01-01T00:00:00';
       context.fetch();
     });
 
+    //On click of the Submit button
     $('#submit-message').on('click', function(e) {
       var text = $(this).parent().find('input[name="message"]').val();
       var username = window.location.search;
@@ -31,17 +33,20 @@ $(document).ready(function() {
       $('#submit-text').val('');
     });
 
+    //To 'friend' someone...
     $('.messages').on('click', 'span', function() {
       var classes = $(this).removeClass('friend').attr('class');
       context.handleUsernameClick(classes);
       context.fetch();
     });
 
+    //Create room button
     $('#create-room').on('click', function() {
       $(this).hide();
       $('#create-room-text').show();
     });
 
+    //Upon submission of the new room
     $('#room-submit').on('click', function() {
       var newRoom = $('#create-room-text').val();
       context.renderRoom({roomname: newRoom});
@@ -118,7 +123,7 @@ $(document).ready(function() {
     var time = $('<span></span>').append(timeStamp);
     var listItem = $('<li></li>');
 
-    user.addClass(username.replace(/ /g, '__').replace('%20', ''));
+    user.addClass(username.replace(/ /g, '__'));
     if (this.friends.indexOf(username.replace(/ /g, '__')) >= 0) {
       user.addClass('friend');
       listItem.addClass('friend-box');
@@ -140,7 +145,6 @@ $(document).ready(function() {
   };
 
   ChatterBox.prototype.escapeHtml = function (string) {
-    //return string;
     var entityMap = {
       '&': '&amp;',
       '<': '&lt;',
@@ -152,7 +156,7 @@ $(document).ready(function() {
 
     return String(string).replace(/[&<>"'\/]/g, function (s) {
       return entityMap[s];
-    });
+    }).replace('%20', ' ');
   };
 
   ChatterBox.prototype.handleUsernameClick = function (username) {
