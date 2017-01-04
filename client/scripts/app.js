@@ -118,7 +118,7 @@ $(document).ready(function() {
 
     var username = this.escapeHtml(message.username);
     var timeStamp = month + '/' + day + '/' + year + ' ' + hours + ':' + mins + ':' + seconds;
-    var user = $('<span></span>').append(username + ' foretold: ');
+    var user = $('<span></span>').append(username + ' foretold:');
     var text = $('<span></span>').append(this.escapeHtml(message.text));
     var time = $('<span></span>').append(timeStamp);
     var listItem = $('<li></li>');

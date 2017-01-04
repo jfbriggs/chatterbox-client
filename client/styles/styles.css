@@ -120,7 +120,7 @@ form input[type=text] {
     padding: 0;
 }
 
-.messages span:hover {
+.messages span:first-child:hover {
     cursor: pointer;
 }
 
